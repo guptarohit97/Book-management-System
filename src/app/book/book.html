@@ -5,8 +5,9 @@
 </div>
 <h1><strong>List</strong></h1>
 <ul>
-  <li *ngFor="let book of books">
+  <li *ngFor="let book of books;let i=index">
     <h2>{{book.id}}. {{book.title}} by {{book.author}}</h2>
+    <button (click)="removeBook(i)">Remove</button>
   </li>
 </ul>
 

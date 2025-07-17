@@ -16,8 +16,13 @@ export class BookComponent {
   title: '',
   author: ''
   };
+
   books:Book[]=[];
   nextId:number=1;
+
+  constructor(){
+    this.loadBooksFromStorage();
+  }
 
 
   addBooks():void{
@@ -33,6 +38,28 @@ export class BookComponent {
     }
     this.books.push(newBook)
     this.book={id:0,title:'',author:''}
+  }
+  removeBook(index:number){
+    this.books.splice(index,1)
+    this.saveBooksToStorage();
+  }
+
+  saveBooksToStorage():void{
+    localStorage.setItem('books',JSON.stringify(this.books))
+    localStorage.setItem('nextId',this.nextId.toString())
+  }
+  loadBooksFromStorage():void{
+    const storedBooks=localStorage.getItem('books')
+    const storedNextId=localStorage.getItem('nextId')
+    if(storedBooks){
+      this.books=JSON.parse(storedBooks)
+    }
+    if(storedNextId){
+      this.nextId=+storedNextId;
+    }
+    else if(this.books.length>0){
+      this.nextId=Math.max(...this.books.map(b=>b.id))+1;
+    }
   }
 
 
